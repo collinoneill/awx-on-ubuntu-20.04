@@ -14,14 +14,13 @@ sudo apt -y update && sudo apt -y upgrade
 Install docker
 --------------
 ```bash
-sudo apt install docker.io
+sudo apt install docker.io -y
 ```
 
 Install microk8s
 ----------------
 ```bash
-sudo install docker.io
-sudo snap install microk8s
+sudo snap install microk8s --classic
 usermod -aG microk8s $USER
 echo "alias kubectl='microk8s.kubectl'" >> /home/$USER/.bash_aliases
 kubectl get nodes
