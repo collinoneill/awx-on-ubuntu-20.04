@@ -1,0 +1,58 @@
+Install AWX 17.0.1 on Ubuntu 20.04
+==================================
+
+System Requirements
+-------------------
+- At least 4 GB memory
+- At least 2 CPU cores
+- Running Docker, Openshift or Kubernetes
+
+Prep the machine
+----------------
+
+```
+sudo apt update -y  && sudo apt upgrade -y
+sudo apt install ansible docker.io docker-compose -y
+```
+
+Clone Git repository
+--------------------
+```
+git clone -b 17.0.1 https://github.com/ansible/awx.git
+```
+
+Edit the inventory file
+-----------------------
+```
+cd ~awx/installer
+nano inventory.yml
+```
+Change admin_password to your own password
+```
+admin_password=(your password)
+```
+Change the custom environmental folder for your local install
+Uncomment ```custom_venv``` and replace it with
+```
+custom_venv=/home/[user]/virtual/awx
+```
+Run the install playbook
+------------------------
+```
+cd ~awx/installer
+ansible-playbook -i inventory install.yml
+```
+Verify containers are running
+-----------------------------
+```docker ps```
+It should look like this:
+```
+CONTAINER ID   IMAGE                COMMAND                  CREATED         STATUS         PORTS                                   NAMES
+04be3d9bfc6b   ansible/awx:17.0.1   "/usr/bin/tini -- /u…"   8 minutes ago   Up 8 minutes   8052/tcp                                awx_task
+11d46e2b7d1e   ansible/awx:17.0.1   "/usr/bin/tini -- /b…"   8 minutes ago   Up 8 minutes   0.0.0.0:80->8052/tcp, :::80->8052/tcp   awx_web
+97db08016c14   postgres:12          "docker-entrypoint.s…"   8 minutes ago   Up 8 minutes   5432/tcp                                awx_postgres
+7d5f7ac2d4ee   redis                "docker-entrypoint.s…"   8 minutes ago   Up 8 minutes   6379/tcp                                awx_redis
+```
+Sign into your instance
+-----------------------
+http://example.com
