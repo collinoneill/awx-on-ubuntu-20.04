@@ -63,3 +63,13 @@ exit
 Sign into your instance
 -----------------------
 http://example.com
+Note: A Handy Way to Wipe you Docker Environment
+------------------------------------------------
+To clear out your entire environment, use these commands.
+```
+for i in `docker ps -q`; do docker stop $i; done
+docker prune --force
+for i in `docker volume ls -q`; do docker volume rm $i; done
+for i in `docker image ls -q`; do docker image rm $i; done
+```
+Then you can start from the ansible-playbook step.
