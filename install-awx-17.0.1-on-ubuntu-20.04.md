@@ -57,7 +57,7 @@ To be able to sign in, you must create a superuser.
 ```
 docker ps
 docker exec -it awx_web bash
-awx_manage changepassword admin
+awx-manage changepassword admin
 exit
 ```
 Sign into your instance
