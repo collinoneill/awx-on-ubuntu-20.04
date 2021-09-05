@@ -23,7 +23,7 @@ Install microk8s
 ```bash
 sudo snap install microk8s --classic
 sudo usermod -aG microk8s $USER
-echo "alias kubectl='microk8s.kubectl'" >> /home/$USER/.bash_aliases
+echo "alias kubectl=\"microk8s.kubectl\"" >> /home/$USER/.bash_aliases
 kubectl get nodes
 kubectl get pods
 kubectl get pods -A
