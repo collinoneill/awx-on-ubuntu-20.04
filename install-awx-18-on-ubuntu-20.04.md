@@ -15,6 +15,7 @@ Install docker
 --------------
 ```bash
 sudo apt install docker.io -y
+usermod -aG docker $USER
 ```
 
 Install microk8s
