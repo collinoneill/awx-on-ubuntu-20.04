@@ -47,7 +47,7 @@ metadata:
   name: static-data-pvc
 spec:
   accessModes:
-    - RedWrite Once
+    - RedWriteOnce
   storageClassName: local-path
   resources:
     requests:
