@@ -61,10 +61,10 @@ echo "
 apiVersion: awx.ansible.com/v1beta1
 kind: AWX
 metadata:
-  name: awx-demo
+  name: awx
 spec:
   service_type: nodeport
-  ingress_type: none
+  porjects_persistence: true
   projects_storage_access_mode: ReadWriteOnce
   web_extra_volume_mounts: |
     - name: static-data
@@ -78,7 +78,7 @@ spec:
 Run the deployment
 ------------------
 ```bash
-kubectl apply -f awx-demo.yml
+kubectl apply -f awx.yml
 kubectl get pods -l "app.kubernetes.io/managed-by=awx-operator"
 kubectl get svc -l "app.kubernetes.io/managed-by=awx-operator"
 ```
@@ -90,19 +90,23 @@ Get the Admin user password
 ---------------------------
 ```bash
 kubectl get secrets
-kubectl get secret awx-demo-admin-password -o jsonpath="{.data.password}" | base64 --decode
+kubectl get secret awx-admin-password -o jsonpath="{.data.password}" | base64 --decode
+```
+or a more readable version
+```
+kubectl get secret awx-admin-password -o go-template='{{range $k,$v := .data}}{{printf "%s: " $k}}{{if not $v}}{{$v}}{{else}}{{$v | base64decode}}{{end}}{{"\n"}}{{end}}'
 ```
 
 Expose the deployment
 ---------------------
 ```bash
-kubectl expose deployment awx-demo --type=LoadBalancer --port=8080
+kubectl expose deployment awx --type=LoadBalancer --port=8080
 ```
 
 Enable AWX to be access via the Internet
 ----------------------------------------
 ```bash
-kubectl port-forward svc/awx-demo-service --address 0.0.0.0 30886:80
+kubectl port-forward svc/awx-service --address 0.0.0.0 30886:80
 ```
 
 Test
