@@ -42,7 +42,7 @@ Create the deployment file
 cat <<EOF | kubectl create -f -
 ---
 apiVersion: v1
-kind: PersustentVolumeClaim
+kind: PersistentVolumeClaim
 metadata: 
   name: static-data-pvc
 spec:
