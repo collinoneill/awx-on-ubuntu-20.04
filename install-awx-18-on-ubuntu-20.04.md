@@ -39,6 +39,23 @@ kubectl get pods
 Create the deployment file
 --------------------------
 ```bash
+cat <<EOF | kubectl create -f -
+---
+apiVersion: v1
+kind: PersustentVolumeClaim
+metadata: 
+  name: static-data-pvc
+spec:
+  accessModes:
+    - RedWrite Once
+  storageClassName: local-path
+  resources:
+    requests:
+      storage: 2Gi
+EOF
+```
+
+```bash
 echo "
 ---
 apiVersion: awx.ansible.com/v1beta1
@@ -48,7 +65,14 @@ metadata:
 spec:
   service_type: nodeport
   ingress_type: none
-  hostname: awx-demo.example.com" > awx-demo.yml
+  projects_storage_access_mode: ReadWriteOnce
+  web_extra_volume_mounts: |
+    - name: static-data
+      mountPath: /var/lib/awx/public
+  extra_volumes: |
+    - name: static-data
+      persistentVolumeClaim:
+        claimName: static-data-pvc" > awx-demo.yml
 ```
 
 Run the deployment
